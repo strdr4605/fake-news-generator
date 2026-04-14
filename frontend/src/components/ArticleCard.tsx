@@ -15,10 +15,10 @@ export function ArticleCard({ article, sourceName }: ArticleCardProps) {
           <SourceBadge name={sourceName} />
         </div>
         <h2 className="text-xl font-black uppercase mb-3 leading-tight">
-          {article.fakeTitle}
+          {article.fakeTitle || 'Untitled'}
         </h2>
         <p className="text-gray-700 text-sm leading-relaxed">
-          {article.fakeDescription}
+          {article.fakeDescription || ''}
         </p>
       </article>
     </Link>
