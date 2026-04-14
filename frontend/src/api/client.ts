@@ -7,7 +7,7 @@ const api = axios.create({
 
 export async function fetchArticles(page: number, limit = 20) {
   const offset = page * limit
-  const { data } = await api.get('/articles', { params: { limit, offset, status: 'transformed' } })
+  const { data } = await api.get('/articles', { params: { limit, offset } })
   return data
 }
 
