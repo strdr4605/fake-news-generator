@@ -8,8 +8,7 @@
     "start": "node dist/index.js",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
-    "db:studio": "drizzle-kit studio",
-    "test": "vitest"
+    "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@fastify/cors": "^10.0.0",
@@ -27,7 +26,6 @@
     "@types/xml2js": "^0.4.14",
     "drizzle-kit": "^0.30.0",
     "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
-    "vitest": "^4.1.4"
+    "typescript": "^5.0.0"
   }
 }
