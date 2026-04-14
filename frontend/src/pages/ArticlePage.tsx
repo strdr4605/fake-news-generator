@@ -63,7 +63,7 @@ export function ArticlePage() {
 
           <h1 className="text-3xl font-black uppercase mb-6 leading-tight">{article.fakeTitle || 'Untitled'}</h1>
 
-          <p className="text-lg leading-relaxed mb-8">{article.fakeDescription || ''}</p>
+          <p className="text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: article.fakeDescription || '' }} />
 
           {article.originalUrl && (
             <a
