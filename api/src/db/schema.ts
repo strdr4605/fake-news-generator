@@ -1,4 +1,7 @@
-import { pgTable, uuid, text, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, text, timestamp, varchar, pgEnum } from 'drizzle-orm/pg-core'
+
+export const articleStatusEnum = pgEnum('article_status', ['pending', 'transformed', 'failed'])
+export const chatRoleEnum = pgEnum('chat_role', ['user', 'assistant'])
 
 export const sources = pgTable('sources', {
   id: uuid('id').defaultRandom().primaryKey(),
@@ -15,7 +18,7 @@ export const articles = pgTable('articles', {
   originalUrl: text('original_url'),
   fakeTitle: text('fake_title'),
   fakeDescription: text('fake_description'),
-  status: varchar('status', { length: 50 }).notNull().default('pending'),
+  status: articleStatusEnum('status').notNull().default('pending'),
   publishedAt: timestamp('published_at'),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().notNull(),
@@ -24,7 +27,7 @@ export const articles = pgTable('articles', {
 export const chatMessages = pgTable('chat_messages', {
   id: uuid('id').defaultRandom().primaryKey(),
   articleId: uuid('article_id').references(() => articles.id).notNull(),
-  role: varchar('role', { length: 50 }).notNull(),
+  role: chatRoleEnum('role').notNull(),
   content: text('content').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })

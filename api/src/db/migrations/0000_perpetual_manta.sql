@@ -1,3 +1,5 @@
+CREATE TYPE "public"."article_status" AS ENUM('pending', 'transformed', 'failed');--> statement-breakpoint
+CREATE TYPE "public"."chat_role" AS ENUM('user', 'assistant');--> statement-breakpoint
 CREATE TABLE "articles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"source_id" uuid NOT NULL,
@@ -6,7 +8,7 @@ CREATE TABLE "articles" (
 	"original_url" text,
 	"fake_title" text,
 	"fake_description" text,
-	"status" varchar(50) DEFAULT 'pending' NOT NULL,
+	"status" article_status DEFAULT 'pending' NOT NULL,
 	"published_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
@@ -15,7 +17,7 @@ CREATE TABLE "articles" (
 CREATE TABLE "chat_messages" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"article_id" uuid NOT NULL,
-	"role" varchar(50) NOT NULL,
+	"role" chat_role NOT NULL,
 	"content" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
