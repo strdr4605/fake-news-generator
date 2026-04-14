@@ -1,8 +1,15 @@
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+let _openai: OpenAI | undefined
+
+function getOpenAI(): OpenAI {
+  if (!_openai) {
+    _openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+  return _openai
+}
 
 const TRANSFORM_PROMPT = `You are a satirical news writer. Transform the following news article into a humorous, absurd fake news version while keeping it recognizable. Only change the title and description to be comedic/absurd, keeping the general topic and structure intact.
 
@@ -15,6 +22,7 @@ export async function transformArticle(
   originalTitle: string,
   originalDescription: string
 ): Promise<{ fakeTitle: string; fakeDescription: string }> {
+  const openai = getOpenAI()
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages: [

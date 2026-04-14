@@ -3,9 +3,16 @@ import { db } from '../db/index.js'
 import { chatMessages, articles } from '../db/schema.js'
 import { eq } from 'drizzle-orm'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+let _openai: OpenAI | undefined
+
+function getOpenAI(): OpenAI {
+  if (!_openai) {
+    _openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  }
+  return _openai
+}
 
 export async function askArticle(
   articleId: string,
@@ -47,6 +54,7 @@ Answer questions about this article helpfully.`,
     { role: 'user' as const, content: userMessage },
   ]
 
+  const openai = getOpenAI()
   const completion = await openai.chat.completions.create({
     model: 'gpt-4o-mini',
     messages,
