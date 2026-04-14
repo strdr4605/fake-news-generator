@@ -1,0 +1,68 @@
+import { FastifyInstance } from 'fastify'
+import { db } from '../db/index.js'
+import { articles, sources, chatMessages } from '../db/schema.js'
+import { eq, desc, and } from 'drizzle-orm'
+
+export async function articlesRoutes(fastify: FastifyInstance) {
+  fastify.get('/api/articles', async (request) => {
+    const { source, status } = request.query as { source?: string; status?: string }
+
+    const conditions = []
+    if (source) conditions.push(eq(sources.id, source))
+    if (status) conditions.push(eq(articles.status, status as any))
+
+    const results = await db
+      .select({
+        id: articles.id,
+        originalTitle: articles.originalTitle,
+        fakeTitle: articles.fakeTitle,
+        fakeDescription: articles.fakeDescription,
+        status: articles.status,
+        publishedAt: articles.publishedAt,
+        createdAt: articles.createdAt,
+        sourceName: sources.name,
+        sourceId: sources.id,
+      })
+      .from(articles)
+      .leftJoin(sources, eq(articles.sourceId, sources.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
+      .orderBy(desc(articles.createdAt))
+
+    return { articles: results }
+  })
+
+  fastify.get('/api/articles/:id', async (request, reply) => {
+    const { id } = request.params as { id: string }
+
+    const [article] = await db
+      .select({
+        id: articles.id,
+        originalTitle: articles.originalTitle,
+        originalDescription: articles.originalDescription,
+        originalUrl: articles.originalUrl,
+        fakeTitle: articles.fakeTitle,
+        fakeDescription: articles.fakeDescription,
+        status: articles.status,
+        publishedAt: articles.publishedAt,
+        createdAt: articles.createdAt,
+        sourceName: sources.name,
+      })
+      .from(articles)
+      .leftJoin(sources, eq(articles.sourceId, sources.id))
+      .where(eq(articles.id, id))
+      .limit(1)
+
+    if (!article) {
+      reply.status(404)
+      return { error: 'Article not found' }
+    }
+
+    const messages = await db
+      .select()
+      .from(chatMessages)
+      .where(eq(chatMessages.articleId, id))
+      .orderBy(chatMessages.createdAt)
+
+    return { article, messages }
+  })
+}
