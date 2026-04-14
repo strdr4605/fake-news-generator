@@ -4,7 +4,7 @@ import { articles, sources, chatMessages } from '../db/schema.js'
 import { eq, desc, and } from 'drizzle-orm'
 
 export async function articlesRoutes(fastify: FastifyInstance) {
-  fastify.get('/api/articles', async (request) => {
+  fastify.get('/articles', async (request) => {
     const { source, status } = request.query as { source?: string; status?: string }
 
     const conditions = []
@@ -31,7 +31,7 @@ export async function articlesRoutes(fastify: FastifyInstance) {
     return { articles: results }
   })
 
-  fastify.get('/api/articles/:id', async (request, reply) => {
+  fastify.get('/articles/:id', async (request, reply) => {
     const { id } = request.params as { id: string }
 
     const [article] = await db

@@ -3,7 +3,7 @@ import { db } from '../db/index.js'
 import { sources } from '../db/schema.js'
 
 export async function sourcesRoutes(fastify: FastifyInstance) {
-  fastify.get('/api/sources', async () => {
+  fastify.get('/sources', async () => {
     const results = await db.select().from(sources)
     return { sources: results }
   })
