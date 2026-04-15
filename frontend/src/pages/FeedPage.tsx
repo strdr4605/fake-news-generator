@@ -53,7 +53,7 @@ export function FeedPage() {
         <div className="flex gap-2 mb-8 flex-wrap">
           <button
             onClick={() => setSelectedSource(null)}
-            className={`px-4 py-2 font-bold uppercase text-sm border-3 border-black shadow-[2px_2px_0_black] transition-all ${
+            className={`px-4 py-2 font-bold uppercase text-sm border-3 border-black shadow-[2px_2px_0_black] transition-all cursor-pointer ${
               selectedSource === null
                 ? 'bg-black text-white'
                 : 'bg-white hover:bg-gray-100'
@@ -65,7 +65,7 @@ export function FeedPage() {
             <button
               key={source.id}
               onClick={() => setSelectedSource(source.id)}
-              className={`px-4 py-2 font-bold uppercase text-sm border-3 border-black shadow-[2px_2px_0_black] transition-all ${
+              className={`px-4 py-2 font-bold uppercase text-sm border-3 border-black shadow-[2px_2px_0_black] transition-all cursor-pointer ${
                 selectedSource === source.id
                   ? 'bg-black text-white'
                   : 'bg-white hover:bg-gray-100'
