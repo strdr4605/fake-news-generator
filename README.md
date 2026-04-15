@@ -2,6 +2,8 @@
 
 Full-stack application that scrapes real news from RSS feeds, transforms them into satirical fake versions using OpenAI LLM, and provides a chat interface for Q&A.
 
+Explanation video: https://www.loom.com/share/0975a3ee614a4b1a9113900504034f27
+
 ## Tech Stack
 
 - **Backend:** Node.js, Fastify, TypeScript, Drizzle ORM
