@@ -3,6 +3,7 @@ export type ArticleStatus = 'pending' | 'transformed' | 'failed'
 export type Source = {
   id: string
   name: string
+  fakeName: string | null
   url: string
   createdAt: string
 }
@@ -20,6 +21,7 @@ export type Article = {
   createdAt: string
   updatedAt: string
   sourceName?: string
+  sourceFakeName?: string | null
 }
 
 export type ChatMessage = {
