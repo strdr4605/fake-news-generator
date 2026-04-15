@@ -1,19 +1,13 @@
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 import { useEffect } from 'react'
-import { fetchArticles, fetchSources } from '../api/client'
+import { fetchArticles } from '../api/client'
 import { ArticleCard } from '../components/ArticleCard'
 import { ScrapeButton } from '../components/ScrapeButton'
-import type { Article, Source } from '../types'
+import type { Article } from '../types'
 
 export function FeedPage() {
   const { ref: loadMoreRef, inView } = useInView()
-
-  const { data: sourcesData } = useQuery({ queryKey: ['sources'], queryFn: fetchSources })
-  const sourcesMap = (sourcesData?.sources || []).reduce((acc: Record<string, string>, s: Source) => {
-    acc[s.id] = s.name
-    return acc
-  }, {})
 
   const {
     data,
@@ -66,7 +60,7 @@ export function FeedPage() {
             <ArticleCard
               key={article.id}
               article={article}
-              sourceName={sourcesMap[article.sourceId] || 'Unknown'}
+              sourceName={article.sourceName || 'Unknown'}
             />
           ))}
           {hasNextPage && (

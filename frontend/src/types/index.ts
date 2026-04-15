@@ -19,6 +19,7 @@ export interface Article {
   publishedAt: string | null
   createdAt: string
   updatedAt: string
+  sourceName?: string
 }
 
 export interface ChatMessage {

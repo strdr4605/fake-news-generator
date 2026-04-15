@@ -1,23 +1,22 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams, Link } from 'react-router-dom'
-import { fetchArticle, fetchSources } from '../api/client'
+import { fetchArticle } from '../api/client'
 import { ChatDrawer } from '../components/ChatDrawer'
 import { SourceBadge } from '../components/SourceBadge'
-import type { Source } from '../types'
 
 export function ArticlePage() {
   const { id } = useParams<{ id: string }>()
   const [isChatOpen, setIsChatOpen] = useState(false)
 
-  const { data: article, isLoading, error } = useQuery({
+  const { data: response, isLoading, error } = useQuery({
     queryKey: ['article', id],
     queryFn: () => fetchArticle(id!),
     enabled: !!id,
   })
 
-  const { data: sourcesData } = useQuery({ queryKey: ['sources'], queryFn: fetchSources })
-  const sourceName = sourcesData?.sources?.find((s: Source) => s.id === article?.sourceId)?.name || 'Unknown'
+  const article = response?.article
+  const sourceName = response?.article?.sourceName || 'Unknown'
 
   const toggleChat = () => setIsChatOpen((prev) => !prev)
 
@@ -63,7 +62,7 @@ export function ArticlePage() {
 
           <h1 className="text-3xl font-black uppercase mb-6 leading-tight">{article.fakeTitle || 'Untitled'}</h1>
 
-          <p className="text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: article.fakeDescription || '' }} />
+          <p className="text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: (article.fakeDescription || '').replace(/<a[^>]*>Continue reading\.\.\.[^<]*<\/a>/i, '') }} />
 
           {article.originalUrl && (
             <a
