@@ -41,8 +41,11 @@ export async function transformArticle(
   const text = completion.choices[0]?.message?.content || ''
 
   const lines = text.split('\n').filter((l) => l.trim())
-  const fakeTitle = lines[0]?.replace(/^(Fake Title:|Title:)\s*/i, '').trim() || originalTitle
-  const fakeDescription = lines.slice(1).join(' ').trim() || originalDescription
+  let fakeTitle = lines[0] || originalTitle
+  fakeTitle = fakeTitle.replace(/^\*\*(?:Fake ?Title:|Title:)?\s*/, '').replace(/\s*\*\*$/, '').replace(/^\*\*/, '').trim()
+  if (!fakeTitle) fakeTitle = originalTitle
+  let fakeDescription = lines.slice(1).join(' ').replace(/^\*\*(?:Fake ?Title:|Title:)?\s*/, '').replace(/\s*\*\*$/, '').replace(/^\*\*/, '').trim()
+  if (!fakeDescription) fakeDescription = originalDescription
 
   return { fakeTitle, fakeDescription }
 }
