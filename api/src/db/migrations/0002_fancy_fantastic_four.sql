@@ -1,0 +1,1 @@
+ALTER TABLE "sources" ADD COLUMN "fake_name" varchar(255);

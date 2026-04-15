@@ -15,6 +15,13 @@
       "when": 1776175000000,
       "tag": "0002_seed_sources",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1776248905193,
+      "tag": "0002_fancy_fantastic_four",
+      "breakpoints": true
     }
   ]
 }

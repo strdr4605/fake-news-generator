@@ -6,6 +6,7 @@ export const chatRoleEnum = pgEnum('chat_role', ['user', 'assistant'])
 export const sources = pgTable('sources', {
   id: uuid('id').defaultRandom().primaryKey(),
   name: varchar('name', { length: 255 }).notNull(),
+  fakeName: varchar('fake_name', { length: 255 }),
   url: text('url').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })

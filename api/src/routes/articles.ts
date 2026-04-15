@@ -23,6 +23,7 @@ export async function articlesRoutes(fastify: FastifyInstance) {
         publishedAt: articles.publishedAt,
         createdAt: articles.createdAt,
         sourceName: sources.name,
+        sourceFakeName: sources.fakeName,
         sourceId: sources.id,
       })
       .from(articles)
@@ -32,6 +33,7 @@ export async function articlesRoutes(fastify: FastifyInstance) {
 
     const articlesWithFallback = results.map(a => ({
       ...a,
+      sourceName: a.sourceFakeName || a.sourceName,
       fakeTitle: a.fakeTitle || a.originalTitle,
       fakeDescription: a.fakeDescription || a.originalDescription,
     }))
@@ -54,6 +56,7 @@ export async function articlesRoutes(fastify: FastifyInstance) {
         publishedAt: articles.publishedAt,
         createdAt: articles.createdAt,
         sourceName: sources.name,
+        sourceFakeName: sources.fakeName,
       })
       .from(articles)
       .leftJoin(sources, eq(articles.sourceId, sources.id))
@@ -67,6 +70,7 @@ export async function articlesRoutes(fastify: FastifyInstance) {
 
     const articleWithFallback = {
       ...article,
+      sourceName: article.sourceFakeName || article.sourceName,
       fakeTitle: article.fakeTitle || article.originalTitle,
       fakeDescription: article.fakeDescription || article.originalDescription,
     }
