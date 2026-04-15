@@ -1,0 +1,24 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "id": "update_source_fake_names",
+  "prevId": "0002_fancy_fantastic_four",
+  "tables": {},
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {
+      "sources": {
+        "fake_name": {
+          "name": "fake_name",
+          "schemaName": "public",
+          "tableName": "sources",
+          "dataType": "varchar",
+          "maxLength": 255,
+          "nullable": true,
+          "hasDefault": false
+        }
+      }
+    }
+  }
+}

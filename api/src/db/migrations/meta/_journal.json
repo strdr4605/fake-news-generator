@@ -22,6 +22,13 @@
       "when": 1776248905193,
       "tag": "0002_fancy_fantastic_four",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1776249000000,
+      "tag": "0003_update_source_fake_names",
+      "breakpoints": true
     }
   ]
 }
