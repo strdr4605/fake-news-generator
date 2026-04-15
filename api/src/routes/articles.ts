@@ -17,6 +17,8 @@ export async function articlesRoutes(fastify: FastifyInstance) {
         originalTitle: articles.originalTitle,
         fakeTitle: articles.fakeTitle,
         fakeDescription: articles.fakeDescription,
+        originalDescription: articles.originalDescription,
+        originalUrl: articles.originalUrl,
         status: articles.status,
         publishedAt: articles.publishedAt,
         createdAt: articles.createdAt,
@@ -28,7 +30,13 @@ export async function articlesRoutes(fastify: FastifyInstance) {
       .where(conditions.length > 0 ? and(...conditions) : undefined)
       .orderBy(desc(articles.createdAt))
 
-    return { articles: results }
+    const articlesWithFallback = results.map(a => ({
+      ...a,
+      fakeTitle: a.fakeTitle || a.originalTitle,
+      fakeDescription: a.fakeDescription || a.originalDescription,
+    }))
+
+    return { articles: articlesWithFallback }
   })
 
   fastify.get('/articles/:id', async (request, reply) => {
@@ -57,12 +65,18 @@ export async function articlesRoutes(fastify: FastifyInstance) {
       return { error: 'Article not found' }
     }
 
+    const articleWithFallback = {
+      ...article,
+      fakeTitle: article.fakeTitle || article.originalTitle,
+      fakeDescription: article.fakeDescription || article.originalDescription,
+    }
+
     const messages = await db
       .select()
       .from(chatMessages)
       .where(eq(chatMessages.articleId, id))
       .orderBy(chatMessages.createdAt)
 
-    return { article, messages }
+    return { article: articleWithFallback, messages }
   })
 }
