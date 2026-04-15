@@ -75,6 +75,15 @@ npm run db:generate  # Generate migrations
 npm run db:migrate    # Apply migrations
 ```
 
+### Drizzle Studio
+
+```bash
+cd api
+DATABASE_URL="postgresql://fakeNews:fakeNews123@localhost:5432/fakeNews" npx drizzle-kit studio
+```
+
+Then open http://localhost:4983
+
 ## Architecture
 
 ```
