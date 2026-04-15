@@ -11,12 +11,14 @@ function getOpenAI(): OpenAI {
   return _openai
 }
 
-const TRANSFORM_PROMPT = `You are a satirical news writer. Transform the following news article into a humorous, absurd fake news version while keeping it recognizable. Only change the title and description to be comedic/absurd, keeping the general topic and structure intact.
+const TRANSFORM_PROMPT = `Given the following news article, create a satirical fake version.
 
 Original Title: {title}
 Original Description: {description}
 
-Write a funny fake version of this article:`
+Respond EXACTLY in this format (no other text):
+Line 1: <your fake title>
+Line 2 onwards: <your fake description as HTML paragraphs>`
 
 export async function transformArticle(
   originalTitle: string,
@@ -28,23 +30,22 @@ export async function transformArticle(
     messages: [
       {
         role: 'system',
-        content: 'You are a satirical news writer. Be creative and funny but not offensive.',
+        content: 'You are a satirical news writer. Keep responses short, funny, and in the exact format requested.',
       },
       {
         role: 'user',
         content: TRANSFORM_PROMPT.replace('{title}', originalTitle).replace('{description}', originalDescription),
       },
     ],
-    max_tokens: 500,
+    max_tokens: 1000,
   })
 
   const text = completion.choices[0]?.message?.content || ''
 
   const lines = text.split('\n').filter((l) => l.trim())
-  let fakeTitle = lines[0] || originalTitle
-  fakeTitle = fakeTitle.replace(/^\*\*(?:Fake ?Title:|Title:)?\s*/, '').replace(/\s*\*\*$/, '').replace(/^\*\*/, '').trim()
+  let fakeTitle = (lines[0] || originalTitle).replace(/^(?:Line \d+:\s*)+/, '').trim()
   if (!fakeTitle) fakeTitle = originalTitle
-  let fakeDescription = lines.slice(1).join(' ').replace(/^\*\*(?:(?:Fake ?)?(?:Title|Description):)?\s*/, '').replace(/\*\*$/, '').replace(/^\*\*/, '').trim()
+  let fakeDescription = lines.slice(1).join('\n').replace(/(?:^Line \d+:\s*)+/gm, '').trim()
   if (!fakeDescription) fakeDescription = originalDescription
 
   return { fakeTitle, fakeDescription }
