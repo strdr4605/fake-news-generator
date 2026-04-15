@@ -31,6 +31,7 @@ export function FeedPage() {
       if (lastPage.articles.length < 20) return undefined
       return lastPageParam + 1
     },
+    refetchInterval: 5000,
   })
 
   useEffect(() => {
@@ -41,11 +42,19 @@ export function FeedPage() {
 
   const allArticles = data?.pages.flatMap((page) => page.articles) || []
   const sources: Source[] = sourcesData?.sources || []
+  const pendingCount = allArticles.filter(a => a.status === 'pending').length
 
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-black uppercase tracking-tight">Latest Fake News</h1>
+        <div>
+          <h1 className="text-4xl font-black uppercase tracking-tight">Latest Fake News</h1>
+          {pendingCount > 0 && (
+            <p className="text-sm text-gray-500 mt-1 animate-pulse">
+              Processing {pendingCount} article{pendingCount > 1 ? 's' : ''}...
+            </p>
+          )}
+        </div>
         <ScrapeButton />
       </div>
 

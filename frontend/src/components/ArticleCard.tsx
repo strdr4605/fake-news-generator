@@ -22,7 +22,32 @@ type ArticleCardProps = {
   sourceName: string
 }
 
+function SkeletonCard({ publishedAt }: { publishedAt: string | null }) {
+  return (
+    <div className="bg-white border-3 border-black shadow-[4px_4px_0_black] p-6 opacity-60">
+      <div className="mb-3 flex items-center gap-2">
+        <div className="h-5 w-24 bg-gray-300 animate-pulse rounded" />
+        {publishedAt && (
+          <span className="text-xs text-gray-500 font-medium">
+            {formatDate(publishedAt)}
+          </span>
+        )}
+      </div>
+      <div className="h-7 w-full bg-gray-300 animate-pulse rounded mb-3" />
+      <div className="space-y-2">
+        <div className="h-4 w-full bg-gray-200 animate-pulse rounded" />
+        <div className="h-4 w-3/4 bg-gray-200 animate-pulse rounded" />
+      </div>
+      <div className="mt-4 h-4 w-32 bg-gray-200 animate-pulse rounded" />
+    </div>
+  )
+}
+
 export function ArticleCard({ article, sourceName }: ArticleCardProps) {
+  if (article.status === 'pending') {
+    return <SkeletonCard publishedAt={article.publishedAt} />
+  }
+
   return (
     <Link to={`/articles/${article.id}`}>
       <article className="bg-white border-3 border-black shadow-[4px_4px_0_black] p-6 hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_black] transition-all cursor-pointer">
