@@ -8,6 +8,7 @@ import { SourceBadge } from '../components/SourceBadge'
 export function ArticlePage() {
   const { id } = useParams<{ id: string }>()
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [showOriginal, setShowOriginal] = useState(false)
 
   const { data: response, isLoading, error } = useQuery({
     queryKey: ['article', id],
@@ -63,6 +64,25 @@ export function ArticlePage() {
           <h1 className="text-3xl font-black uppercase mb-6 leading-tight">{article.fakeTitle || 'Untitled'}</h1>
 
           <p className="text-lg leading-relaxed mb-8" dangerouslySetInnerHTML={{ __html: (article.fakeDescription || '').replace(/<a[^>]*>Continue reading\.\.\.[^<]*<\/a>/i, '') }} />
+
+          {article.originalTitle && article.originalTitle !== article.fakeTitle && (
+            <div className="mt-8 pt-8 border-t-3 border-black">
+              <button
+                onClick={() => setShowOriginal(!showOriginal)}
+                className="mb-4 bg-gray-100 border-3 border-black px-4 py-2 font-bold uppercase text-sm shadow-[2px_2px_0_black] hover:bg-gray-200 transition-all"
+              >
+                {showOriginal ? 'Hide Original' : 'Show Original'}
+              </button>
+
+              {showOriginal && (
+                <div className="bg-gray-50 p-6 border-3 border-black">
+                  <p className="text-xs text-gray-500 font-bold uppercase mb-2">Original Title:</p>
+                  <h2 className="text-xl font-black uppercase mb-4 leading-tight">{article.originalTitle}</h2>
+                  <p className="text-base leading-relaxed text-gray-700" dangerouslySetInnerHTML={{ __html: (article.originalDescription || '').replace(/<a[^>]*>Continue reading\.\.\.[^<]*<\/a>/i, '') }} />
+                </div>
+              )}
+            </div>
+          )}
 
           {article.originalUrl && (
             <a
