@@ -15,11 +15,13 @@ export function ChatDrawer({ articleId, isOpen, onToggle }: ChatDrawerProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const queryClient = useQueryClient()
 
-  const { data: messages = [], isLoading } = useQuery<ChatMessageType[]>({
+  const { data: response, isLoading } = useQuery<{ messages: ChatMessageType[] }>({
     queryKey: ['chat', articleId],
     queryFn: () => fetchChat(articleId),
     enabled: isOpen,
   })
+
+  const messages = response?.messages || []
 
   const sendMutation = useMutation({
     mutationFn: (message: string) => sendChatMessage(articleId, message),
