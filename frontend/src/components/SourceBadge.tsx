@@ -1,4 +1,4 @@
-interface SourceBadgeProps {
+type SourceBadgeProps = {
   name: string
 }
 

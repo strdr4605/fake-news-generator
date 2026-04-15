@@ -1,6 +1,6 @@
 import type { ChatMessage as ChatMessageType } from '../types'
 
-interface ChatMessageProps {
+type ChatMessageProps = {
   message: ChatMessageType
 }
 

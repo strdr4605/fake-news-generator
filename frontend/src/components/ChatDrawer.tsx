@@ -4,7 +4,7 @@ import { fetchChat, sendChatMessage } from '../api/client'
 import { ChatMessage } from './ChatMessage'
 import type { ChatMessage as ChatMessageType } from '../types'
 
-interface ChatDrawerProps {
+type ChatDrawerProps = {
   articleId: string
   isOpen: boolean
   onToggle: () => void

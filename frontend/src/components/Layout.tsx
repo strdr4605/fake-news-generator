@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
-interface LayoutProps {
+type LayoutProps = {
   children: ReactNode
 }
 

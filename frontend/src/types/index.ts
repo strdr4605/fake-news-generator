@@ -1,13 +1,13 @@
 export type ArticleStatus = 'pending' | 'transformed' | 'failed'
 
-export interface Source {
+export type Source = {
   id: string
   name: string
   url: string
   createdAt: string
 }
 
-export interface Article {
+export type Article = {
   id: string
   sourceId: string
   originalTitle: string
@@ -22,7 +22,7 @@ export interface Article {
   sourceName?: string
 }
 
-export interface ChatMessage {
+export type ChatMessage = {
   id: string
   articleId: string
   role: 'user' | 'assistant'
@@ -30,12 +30,12 @@ export interface ChatMessage {
   createdAt: string
 }
 
-export interface ArticlesResponse {
+export type ArticlesResponse = {
   articles: Article[]
   total: number
 }
 
-export interface ScrapeResponse {
+export type ScrapeResponse = {
   success: boolean
   message: string
 }

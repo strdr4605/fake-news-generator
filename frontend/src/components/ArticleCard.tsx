@@ -17,7 +17,7 @@ function formatDate(dateStr: string | null): string {
   })
 }
 
-interface ArticleCardProps {
+type ArticleCardProps = {
   article: Article
   sourceName: string
 }
