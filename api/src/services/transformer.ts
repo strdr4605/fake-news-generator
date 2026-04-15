@@ -44,7 +44,7 @@ export async function transformArticle(
   let fakeTitle = lines[0] || originalTitle
   fakeTitle = fakeTitle.replace(/^\*\*(?:Fake ?Title:|Title:)?\s*/, '').replace(/\s*\*\*$/, '').replace(/^\*\*/, '').trim()
   if (!fakeTitle) fakeTitle = originalTitle
-  let fakeDescription = lines.slice(1).join(' ').replace(/^\*\*(?:Fake ?Title:|Title:)?\s*/, '').replace(/\s*\*\*$/, '').replace(/^\*\*/, '').trim()
+  let fakeDescription = lines.slice(1).join(' ').replace(/^\*\*(?:(?:Fake ?)?(?:Title|Description):)?\s*/, '').replace(/\*\*$/, '').replace(/^\*\*/, '').trim()
   if (!fakeDescription) fakeDescription = originalDescription
 
   return { fakeTitle, fakeDescription }
