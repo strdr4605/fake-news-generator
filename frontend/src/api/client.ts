@@ -5,9 +5,9 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
-export async function fetchArticles(page: number, limit = 20) {
+export async function fetchArticles(page: number, limit = 20, source?: string) {
   const offset = page * limit
-  const { data } = await api.get('/articles', { params: { limit, offset } })
+  const { data } = await api.get('/articles', { params: { limit, offset, source } })
   return data
 }
 
